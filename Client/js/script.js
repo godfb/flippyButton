@@ -8,17 +8,16 @@ function check(){
     console.log( "Checking..." );
     $.ajax({
         url: "/check",
-        type: 'GET',
+        type: 'POST',
         contentType: 'application/json',    
         success: function (response) {
             console.log('query successful, returned:', response);
-            if (response.data === 1)
-            {
-                $( "#target" ).css( "background-color", "red" );
-            }
-            else
-            {
-                $( "#target" ).css( "background-color", "green" );
+            $( "body" ).empty();
+            for (var key in response){
+                var color;
+                if (response[key]) {color = "green";}
+                else {color = "red";}
+                $( "body" ).append( '<button style="background-color: ' + color + ';" id="target">' + key + "</button>" );
             }
         },
         error: function (data) {
@@ -29,29 +28,3 @@ function check(){
         }
     });
 }
-    
-$( "#target" ).click(function() {
-    console.log( "Handler for .click() called." );
-    $.ajax({
-        url: "/succeed",
-        type: 'GET',
-        contentType: 'application/json',    
-        success: function (response) {
-            console.log('query successful, returned:', response);
-            if (response.data === 1)
-            {
-                $( "#target" ).css( "background-color", "red" );
-            }
-            else
-            {
-                $( "#target" ).css( "background-color", "green" );
-            }
-        },
-        error: function (data) {
-            console.error('failed get acronyms :(');
-        },
-        complete: function (data) {
-            console.log('finished request');
-        }
-    });
-});
